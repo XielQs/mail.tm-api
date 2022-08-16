@@ -1,0 +1,57 @@
+{
+	"name": "mail.tm-api",
+	"version": "1.0.0",
+	"description": "A powerful library to use the Mail.TM api to receive emails",
+	"main": "./dist/index.js",
+	"homepage": "https://github.com/gamerboytr/mail.tm-api#readme",
+	"scripts": {
+		"test": "nodemon --watch test/ --watch dist/ test/index.mjs",
+		"watch": "tsc --watch",
+		"build": "tsc"
+	},
+	"keywords": [
+		"mail",
+		"tm",
+		"api",
+		"email",
+		"receive",
+		"receive emails",
+		"mail.tm",
+		"library",
+		"gamerboytr"
+	],
+	"author": "GamerboyTR",
+	"license": "MIT",
+	"dependencies": {
+		"axios": "^0.27.2",
+		"eventsource": "^2.0.2"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/gamerboytr/mail.tm-api.git"
+	},
+	"contributors": [
+		{
+			"name": "GamerboyTR",
+			"email": "offical.gamerboytr@yandex.com"
+		}
+	],
+	"files": [
+		"dist"
+	],
+	"devDependencies": {
+		"@types/eventsource": "^1.1.9",
+		"@types/node": "^18.7.3",
+		"@typescript-eslint/eslint-plugin": "^5.0.0",
+		"eslint": "^8.0.1",
+		"eslint-config-standard-with-typescript": "^22.0.0",
+		"eslint-plugin-import": "^2.25.2",
+		"eslint-plugin-n": "^15.0.0",
+		"eslint-plugin-promise": "^6.0.0",
+		"typescript": "*"
+	},
+	"bugs": {
+		"email": "offical.gamerboytr@yandex.com",
+		"url": "https://github.com/gamerboytr/mail.tm-api"
+	}
+}

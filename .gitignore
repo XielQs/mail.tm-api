@@ -1,0 +1,17 @@
+# VSCode
+.history
+.vscode
+
+# Yarn
+yarn.lock
+yarn-error.lock
+
+# Node
+node_modules
+package-lock.json
+
+# TypeScript
+dist
+
+# Utils
+test
