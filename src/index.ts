@@ -15,9 +15,9 @@ const CONFIG: Config = {
 
 let domains: Domain[] = [];
 
-export function fetchDomains(): Promise<Domain[]> {
+export function fetchDomains(page = 1): Promise<Domain[]> {
 	return new Promise(async (resolve, reject) => {
-		const response = await axios.get('/domains?page=1').catch(err => err.response);
+		const response = await axios.get(`/domains?page=${page}`).catch(err => err.response);
 
 		if (response.status === 200) {
 			domains = response.data;
@@ -53,11 +53,7 @@ export function createAccount(address?: string, password?: string): Promise<Acco
 
 export function loginAccount(addressOrToken: string, password?: string): Promise<Account> {
 	return new Promise(async (resolve, reject) => {
-		let token: string = '';
-		if (!password) {
-			token = addressOrToken;
-		}
-		if (!token && (!addressOrToken || !password)) {
+		if (!addressOrToken) {
 			throw new Error('Token or credentials are required');
 		}
 
@@ -71,10 +67,10 @@ export function loginAccount(addressOrToken: string, password?: string): Promise
 
 			reject(getError(response));
 		} else {
-			const response = await axios.get('/me', { headers: { Authorization: `Bearer ${token}` } }).catch(err => err.response);
+			const response = await axios.get('/me', { headers: { Authorization: `Bearer ${addressOrToken}` } }).catch(err => err.response);
 
 			if (response.status === 200) {
-				resolve(await new Account(Object.assign(response.data, { token }), CONFIG));
+				resolve(await new Account(Object.assign(response.data, { token: addressOrToken }), CONFIG));
 			}
 
 			reject(getError(response));
