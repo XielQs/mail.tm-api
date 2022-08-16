@@ -22,7 +22,7 @@ const MailTM = require('mail.tm-api');
 const account = await MailTM.createAccount();
 // Or you can specify the mail address & password
 const availableDomains = await MailTM.fetchDomains();
-const account = await MailTM.loginAccount('ADDRESS@' + availableDomains[0].domain, 'PASSWORD');
+const account = await MailTM.createAccount('ADDRESS@' + availableDomains[0].domain, 'PASSWORD');
 ```
 
 #### Login Account
@@ -30,11 +30,11 @@ const account = await MailTM.loginAccount('ADDRESS@' + availableDomains[0].domai
 ```js
 const MailTM = require('mail.tm-api');
 
-const account = await MailTM.loginAccount({
- address: 'ADDRESS@DOMAIN',
- password: 'PASSWORD',
- token: 'TOKEN'
-});
+const account = await MailTM.loginAccount('ADDRESS@DOMAIN', 'PASSWORD');
+
+// Using with token
+
+const account = await MailTM.loginAccount('TOKEN');
 ```
 
 Note: If you have a token, you can use it instead of the address & password

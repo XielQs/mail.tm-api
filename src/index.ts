@@ -51,14 +51,18 @@ export function createAccount(address?: string, password?: string): Promise<Acco
 	});
 }
 
-export function loginAccount({ address, password, token }: { address?: string; password?: string; token?: string } = {}): Promise<Account> {
+export function loginAccount(addressOrToken: string, password?: string): Promise<Account> {
 	return new Promise(async (resolve, reject) => {
-		if (!token && (!address || !password)) {
+		let token: string = '';
+		if (!password) {
+			token = addressOrToken;
+		}
+		if (!token && (!addressOrToken || !password)) {
 			throw new Error('Token or credentials are required');
 		}
 
-		if (address && password) {
-			const tokenResponse = await axios.post('/token', { address, password }).catch(err => err.response);
+		if (addressOrToken && password) {
+			const tokenResponse = await axios.post('/token', { addressOrToken, password }).catch(err => err.response);
 			const response = await axios.get('/me', { headers: { Authorization: `Bearer ${tokenResponse.data.token}` } }).catch(err => err.response);
 
 			if (response.status === 200) {
