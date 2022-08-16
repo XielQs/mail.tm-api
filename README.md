@@ -1,6 +1,6 @@
-# <center>mail.tm-api</center>
+# mail.tm-api
 
-<center>A powerful library to use the Mail.TM api to receive email</center>
+A powerful library to use the Mail.TM api to receive email
 
 ## Installation
 
