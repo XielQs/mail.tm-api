@@ -1,6 +1,7 @@
 # VSCode
 .history
 .vscode
+.idea
 
 # Yarn
 yarn.lock
@@ -15,4 +16,3 @@ dist
 
 # Utils
 test
-creditials.json

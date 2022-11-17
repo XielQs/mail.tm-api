@@ -1,11 +1,17 @@
 # mail.tm-api
 
-A powerful library to use the Mail.TM api to receive email
+⚡ A powerful library to use the Mail.TM and Mail.GW api to receive email
 
 ## Installation
 
 ```bash
 $ npm install mail.tm-api
+```
+
+### Or
+
+```bash
+$ yarn add mail.tm-api
 ```
 
 ## Getting Started
@@ -16,13 +22,25 @@ $ npm install mail.tm-api
 
 #### Create Account
 
-```javascript
-const MailTM = require('mail.tm-api');
+There is a bunch of way to create an account
 
-const account = await MailTM.createAccount();
+```javascript
+const Mail = require('mail.tm-api');
+
+const account = await Mail.createAccount();
 // Or you can specify the mail address & password
-const availableDomains = await MailTM.fetchDomains();
-const account = await MailTM.createAccount('ADDRESS@' + availableDomains[0].domain, 'PASSWORD');
+const account = await Mail.createAccount('ADDRESS', 'PASSWORD');
+// Example: Mail.createAccount('George', '61376')
+```
+
+You can create account with only domain!
+
+```js
+const domain = await Mail.fetchDomains({ getRandomDomain: true });
+
+const account = await Mail.createAccount(domain, 'PASSWORD');
+// Without password
+const account = await Mail.createAccount(domain);
 ```
 
 #### Login Account
@@ -39,18 +57,37 @@ const account = await MailTM.loginAccount('TOKEN');
 
 Note: If you have a token, you can use it instead of the address & password
 
-### Fetch Account Info
+#### Fetch Account Info
 
 ```js
 console.log(await account.fetch());
 // { id: 'ID', address: 'ADDRESS@DOMAIN', ... }
 ```
 
-### Delete Account
+#### Delete Account
 
 ```js
 console.log(await account.delete());
 // true
+```
+
+### Domains
+
+#### Fetch domains
+
+```js
+const Mail = require('mail.tm-api');
+
+console.log(await Mail.fetchDomains());
+// [{ id: 'DOMAIN_ID', domain: 'DOMAIN' }]
+
+// Fetch a specific page
+
+console.log(await Mail.fetchDomains({ page: 2 }));
+// [{ id: 'DOMAIN_ID', domain: 'DOMAIN' }]
+
+// Get random domain
+console.log(await Mail.fetchDomains({ getRandomDomain: true }));
 ```
 
 ### Configure Class
@@ -66,6 +103,7 @@ MailTM.setConfig({
 #### Available props
 
 - **disableListening** _[Optional & Boolean]_ **=** false: Disable listening for new emails
+- **mailService** _[Optional & 'mail.tm' | 'mail.gw']_ **=** 'mail.tm': Change mail service
 
 ### Emails
 
@@ -95,6 +133,11 @@ console.log(await account.emails.cache.get('MAIL_ID').fetch());
 ```js
 console.log(await account.emails.fetchAll());
 // [{ id: 'MAIL_ID', accountId: 'ACCOUNT_ID', ... }, ...]
+
+// Fetch a specific page
+
+console.log(await account.emails.fetchAll(2));
+// [{ id: 'MAIL_ID', accountId: 'ACCOUNT_ID', ... }, ...]
 ```
 
 #### Listen for new emails
@@ -123,6 +166,18 @@ console.log(await account.emails.cache.get('MAIL_ID').delete());
 
 console.log(await (await account.emails.fetch('MAIL_ID')).delete());
 // { id: 'MAIL_ID', accountId: 'ACCOUNT_ID', ..., isDeleted: true }
+```
+
+#### Download a email
+
+```js
+console.log(await account.emails.cache.get('MAIL_ID').download('PATH.eml'));
+// PATH.eml
+
+// Or
+
+console.log(await (await account.emails.fetch('MAIL_ID')).download('PATH.eml'));
+// PATH.eml
 ```
 
 ### License

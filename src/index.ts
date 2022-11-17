@@ -1,83 +1,112 @@
-'use strict';
+import MailTMError from './errors/MailTMError';
 import getError from './utils/getError';
 import { Domain } from './types/common';
 import Account from './classes/Account';
+import { AxiosResponse } from 'axios';
+import request from './utils/request';
 import Config from './types/Config';
-import axios from 'axios';
-
-axios.defaults.headers.common['Content-Type'] = 'application/json';
-axios.defaults.headers.common['Accept'] = 'application/json';
-axios.defaults.baseURL = 'https://api.mail.tm';
 
 const CONFIG: Config = {
-	disableListening: false
+  disableListening: false,
+  mailService: 'mail.tm'
 };
 
 let domains: Domain[] = [];
 
-export function fetchDomains(page = 1): Promise<Domain[]> {
-	return new Promise(async (resolve, reject) => {
-		const response = await axios.get(`/domains?page=${page}`).catch(err => err.response);
-
-		if (response.status === 200) {
-			domains = response.data;
-		} else {
-			reject(getError(response));
-		}
-
-		resolve(domains);
-	});
+export async function fetchDomains<Random extends boolean = false> ({ page = 1, getRandomDomain = false as Random }: { page?: number, getRandomDomain?: Random } | undefined = {}): Promise<Random extends true ? Domain : Domain[]> {
+  return await new Promise(async (resolve, reject) => {
+    const response = await request().get(`/domains?page=${page}`).catch(err => err.response);
+    if (response.status === 200) {
+      domains = response.data;
+      if (getRandomDomain === true) {
+        resolve(domains[Math.floor(Math.random() * domains.length)] as Random extends true ? Domain : Domain[]);
+      } else {
+        resolve(domains as Random extends true ? Domain : Domain[]);
+      }
+    } else {
+      reject(getError(response));
+    }
+  });
 }
 
-export function createAccount(address?: string, password?: string): Promise<Account> {
-	return new Promise(async (resolve, reject) => {
-		await fetchDomains().catch(reject);
+export async function createAccount (address?: string, password?: string): Promise<Account> {
+  return await new Promise(async (resolve, reject) => {
+    await fetchDomains().catch(reject);
 
-		if (!address) {
-			address = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15) + '@' + domains[Math.floor(Math.random() * domains.length)].domain;
-		}
+    if (typeof address !== 'string') {
+      address = `${Math.random().toString(36).substring(2, 15)}${Math.random().toString(36).substring(2, 15)}@${domains[Math.floor(Math.random() * domains.length)].domain}`;
+    }
 
-		if (!password) {
-			password = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-		}
+    if (address.split('@').length === 1) {
+      if (domains.some(domain => domain.domain === address)) {
+        address = `${(Math.random().toString(36).slice(0, 16) + Math.random().toString(36).slice(0, 6)).replace(/\W/, '')}@${address}`;
+      } else {
+        address += `@${domains[Math.floor(Math.random() * domains.length)].domain}`;
+      }
+    }
 
-		const response = await axios.post('/accounts', { address, password }).catch(err => err.response);
+    if (typeof password !== 'string') {
+      password = `${Math.random().toString(36).substring(2, 15)}${Math.random().toString(36).substring(2, 15)}`;
+    }
 
-		if (response.status === 201) {
-			resolve(await new Account(Object.assign(response.data, { password }), CONFIG));
-		}
+    const response = await request().post('/accounts', { address, password }).catch(err => err.response);
 
-		reject(getError(response));
-	});
+    if (response.status === 201) {
+      const account = new Account(Object.assign(response.data, { password }), CONFIG);
+      await account.fetch().catch(reject);
+      await account.mails.fetchAll().catch(reject);
+      resolve(account);
+      return;
+    }
+
+    reject(getError(response));
+  });
 }
 
-export function loginAccount(addressOrToken: string, password?: string): Promise<Account> {
-	return new Promise(async (resolve, reject) => {
-		if (!addressOrToken) {
-			throw new Error('Token or credentials are required');
-		}
+export async function loginAccount (addressOrToken: string, password?: string): Promise<Account> {
+  return await new Promise(async (resolve, reject) => {
+    await fetchDomains().catch(reject);
 
-		if (addressOrToken && password) {
-			const tokenResponse = await axios.post('/token', { addressOrToken, password }).catch(err => err.response);
-			const response = await axios.get('/me', { headers: { Authorization: `Bearer ${tokenResponse.data.token}` } }).catch(err => err.response);
+    if (typeof addressOrToken !== 'string') {
+      throw new MailTMError('Token or credentials are required');
+    }
 
-			if (response.status === 200) {
-				resolve(await new Account(Object.assign(response.data, { token: tokenResponse.data.token, password }), CONFIG));
-			}
+    if (typeof password === 'string') {
+      const tokenResponse = await request().post('/token', { address: addressOrToken, password }).catch(err => err.response) as AxiosResponse<{ token?: string }>;
 
-			reject(getError(response));
-		} else {
-			const response = await axios.get('/me', { headers: { Authorization: `Bearer ${addressOrToken}` } }).catch(err => err.response);
+      if (tokenResponse.status !== 200 || typeof tokenResponse.data.token !== 'string' || tokenResponse.data.token === '') {
+        reject(getError(tokenResponse));
+        return;
+      }
 
-			if (response.status === 200) {
-				resolve(await new Account(Object.assign(response.data, { token: addressOrToken }), CONFIG));
-			}
+      const response = await request().get('/me', { headers: { Authorization: `Bearer ${tokenResponse.data.token}` } }).catch(err => err.response);
 
-			reject(getError(response));
-		}
-	});
+      if (response.status === 200) {
+        const account = new Account(Object.assign(response.data, { token: tokenResponse.data.token, password }), CONFIG);
+        await account.fetch().catch(reject);
+        await account.mails.fetchAll().catch(reject);
+        resolve(account);
+        return;
+      }
+
+      reject(getError(response));
+    } else {
+      const response = await request().get('/me', { headers: { Authorization: `Bearer ${addressOrToken}` } }).catch(err => err.response);
+
+      if (response.status === 200) {
+        const account = new Account(Object.assign(response.data, { token: addressOrToken }), CONFIG);
+        await account.fetch().catch(reject);
+        await account.mails.fetchAll().catch(reject);
+        resolve(account);
+        return;
+      }
+
+      reject(getError(response));
+    }
+  });
 }
 
-export function setConfig(config: Config) {
-	Object.assign(CONFIG, config);
+export function setConfig (config: Config): void {
+  request(config.mailService);
+  Object.assign(CONFIG, config);
 }

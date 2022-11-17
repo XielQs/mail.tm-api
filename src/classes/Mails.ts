@@ -1,34 +1,42 @@
-import axios, { AxiosResponse } from 'axios';
 import getError from '../utils/getError';
 import { Mail } from '../types/common';
+import request from '../utils/request';
 import MailCache from './MailCache';
 
 export default class Mails {
-	cache = new MailCache();
+  cache: MailCache;
 
-	fetch(id: string): Promise<Mail> {
-		return new Promise(async (resolve, reject) => {
-			const response: AxiosResponse = await axios.get(`/messages/${id}`).catch(err => err.response);
+  constructor () {
+    Object.defineProperty(this, 'cache', { value: new MailCache(), configurable: true, writable: false, enumerable: false });
+  }
 
-			if (response.status === 200) {
-				this.cache.set(id, response.data);
-				resolve(response.data);
-			}
+  async fetch (id: string): Promise<Mail> {
+    return await new Promise(async (resolve, reject) => {
+      const response = await request().get(`/messages/${id}`).catch(err => err.response);
 
-			reject(getError(response));
-		});
-	}
+      if (response.status === 200) {
+        this.cache.set(id, response.data);
+        resolve(response.data);
+        return;
+      }
 
-	fetchAll(): Promise<Mail[]> {
-		return new Promise(async (resolve, reject) => {
-			const response: AxiosResponse = await axios.get('/messages').catch(err => err.response);
+      reject(getError(response));
+    });
+  }
 
-			if (response.status === 200) {
-				response.data.forEach((mail: Mail) => this.cache.set(mail.id, mail));
-				resolve(response.data);
-			}
+  async fetchAll (page: number = 1): Promise<Mail[]> {
+    return await new Promise(async (resolve, reject) => {
+      const response = await request().get(`/messages?page=${page}`).catch(err => err.response);
 
-			reject(getError(response));
-		});
-	}
+      console.log(response);
+
+      if (response.status === 200) {
+        response.data.forEach((mail: Mail) => this.cache.set(mail.id, mail));
+        resolve(response.data);
+        return;
+      }
+
+      reject(getError(response));
+    });
+  }
 }
