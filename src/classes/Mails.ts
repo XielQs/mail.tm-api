@@ -28,8 +28,6 @@ export default class Mails {
     return await new Promise(async (resolve, reject) => {
       const response = await request().get(`/messages?page=${page}`).catch(err => err.response);
 
-      console.log(response);
-
       if (response.status === 200) {
         response.data.forEach((mail: Mail) => this.cache.set(mail.id, mail));
         resolve(response.data);
