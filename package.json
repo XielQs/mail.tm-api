@@ -1,7 +1,7 @@
 {
 	"name": "mail.tm-api",
-	"version": "2.0.2",
-	"description": "A powerful library to use the Mail.TM api to receive emails",
+	"version": "2.1.0",
+	"description": "A powerful library to use the Mail.TM api and Mail.GW to receive emails",
 	"main": "./dist/index.js",
 	"homepage": "https://github.com/gamerboytr/mail.tm-api#readme",
 	"scripts": {
@@ -27,7 +27,7 @@
 	"author": "GamerboyTR",
 	"license": "MIT",
 	"dependencies": {
-		"axios": "^0.27.2",
+		"axios": "^1.4.0",
 		"eventsource": "^2.0.2"
 	},
 	"repository": {

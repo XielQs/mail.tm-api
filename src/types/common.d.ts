@@ -3,8 +3,10 @@ export interface Domain {
   domain: string
   isActive: boolean
   isPrivate: boolean
-  createdAt: string
-  updatedAt: string
+  createdAtTimestamp: string
+  updatedAtTimestamp: string
+  get createdAt(): Date
+  get updatedAt(): Date
 }
 
 export interface Mail {
@@ -26,6 +28,8 @@ export interface Mail {
   hasAttachments: boolean
   downloadUrl: string
   size: number
-  createdAt: string
-  updatedAt: string
+  createdAtTimestamp: string
+  updatedAtTimestamp: string
+  get createdAt(): Date
+  get updatedAt(): Date
 }

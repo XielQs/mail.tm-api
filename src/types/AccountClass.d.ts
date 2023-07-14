@@ -1,11 +1,13 @@
+import { EventEmitter } from 'node:events';
 import UserAccount from './UserAccount';
-import EventEmitter from 'node:events';
+import { AxiosInstance } from 'axios';
 import EventSource from 'eventsource';
 import Mails from '../classes/Mails';
 import Config from './Config';
 
-export default interface AccountClass<Listening> extends UserAccount, EventEmitter {
+export default interface Account extends UserAccount, EventEmitter {
   mails: Mails
   config: Config
-  _eventSource: Listening extends true ? EventSource : undefined
+  _eventSource: EventSource
+  api: AxiosInstance
 }

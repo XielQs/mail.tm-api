@@ -1,4 +1,12 @@
+<center>
+
 # mail.tm-api
+
+[![gamerboytr - mail.tm-api](https://img.shields.io/static/v1?label=gamerboytr&message=mail.tm-api&color=blue&logo=github)](https://github.com/gamerboytr/mail.tm-api "Go to GitHub repo") [![stars - mail.tm-api](https://img.shields.io/github/stars/gamerboytr/mail.tm-api?style=social)](https://github.com/gamerboytr/mail.tm-api) [![forks - mail.tm-api](https://img.shields.io/github/forks/gamerboytr/mail.tm-api?style=social)](https://github.com/gamerboytr/mail.tm-api)
+
+[![GitHub release](https://img.shields.io/github/release/gamerboytr/mail.tm-api?include_prereleases=&sort=semver&color=blue)](https://github.com/gamerboytr/mail.tm-api/releases/) [![License](https://img.shields.io/badge/License-MIT-blue)](#license) [![issues - mail.tm-api](https://img.shields.io/github/issues/gamerboytr/mail.tm-api)](https://github.com/gamerboytr/mail.tm-api/issues)
+
+</center>
 
 ⚡ A powerful library to use the Mail.TM and Mail.GW api to receive email
 
@@ -6,12 +14,10 @@
 
 ```bash
 $ npm install mail.tm-api
-```
-
-### Or
-
-```bash
+# Or
 $ yarn add mail.tm-api
+# Or
+$ pnpm install mail.tm-api
 ```
 
 ## Getting Started
@@ -30,10 +36,10 @@ const Mail = require('mail.tm-api');
 const account = await Mail.createAccount();
 // Or you can specify the mail address & password
 const account = await Mail.createAccount('ADDRESS', 'PASSWORD');
-// Example: Mail.createAccount('George', '61376')
+// Example: Mail.createAccount('George', 'mySuperDuperPass')
 ```
 
-You can create account with only domain!
+You can create account with only domain
 
 ```js
 const domain = await Mail.fetchDomains({ getRandomDomain: true });
@@ -50,7 +56,7 @@ const MailTM = require('mail.tm-api');
 
 const account = await MailTM.loginAccount('ADDRESS@DOMAIN', 'PASSWORD');
 
-// Using with token
+// Login using JWT
 
 const account = await MailTM.loginAccount('TOKEN');
 ```
@@ -102,7 +108,6 @@ MailTM.setConfig({
 
 #### Available props
 
-- **disableListening** _[Optional & Boolean]_ **=** false: Disable listening for new emails
 - **mailService** _[Optional & 'mail.tm' | 'mail.gw']_ **=** 'mail.tm': Change mail service
 
 ### Emails
@@ -143,14 +148,7 @@ console.log(await account.emails.fetchAll(2));
 #### Listen for new emails
 
 ```js
-account.on('newEmail', email => {
- console.log(email);
- // { id: 'MAIL_ID', accountId: 'ACCOUNT_ID', ... }
-});
-
-// Or
-
-account.addListener('newEmail', email => {
+account.on('newMail', email => {
  console.log(email);
  // { id: 'MAIL_ID', accountId: 'ACCOUNT_ID', ... }
 });
@@ -182,6 +180,4 @@ console.log(await (await account.emails.fetch('MAIL_ID')).download('PATH.eml'));
 
 ### License
 
-Licensed under the MIT License
-
-Copyright (c) 2022 GamerboyTR
+Released under [MIT](/LICENSE) by [@gamerboytr](https://github.com/gamerboytr).

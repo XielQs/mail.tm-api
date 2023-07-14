@@ -14,7 +14,9 @@
 		"skipLibCheck": true,
 		"strictNullChecks": true,
 		"strictFunctionTypes": true,
-		"strictBindCallApply": true
+		"strictBindCallApply": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true
 	},
 	"lib": ["es2015"]
 }

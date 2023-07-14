@@ -15,6 +15,7 @@ module.exports = {
         semi: 'off',
         'no-async-promise-executor': 'off',
         '@typescript-eslint/semi': 'off',
-        '@typescript-eslint/no-misused-promises': 'off'
+        '@typescript-eslint/no-misused-promises': 'off',
+        '@typescript-eslint/method-signature-style': 'off'
     }
 };

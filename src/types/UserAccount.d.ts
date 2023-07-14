@@ -5,8 +5,10 @@ export default interface UserAccount {
   used: number
   isDisabled: boolean
   isDeleted: boolean
-  createdAt: string
-  updatedAt: string
+  createdAtTimestamp: string
+  updatedAtTimestamp: string
   token: string
   password?: string
+  get createdAt(): Date
+  get updatedAt(): Date
 }
