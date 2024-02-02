@@ -1,13 +1,15 @@
 {
 	"name": "mail.tm-api",
-	"version": "2.1.0",
+	"version": "3.0.0",
 	"description": "A powerful library to use the Mail.TM api and Mail.GW to receive emails",
 	"main": "./dist/index.js",
-	"homepage": "https://github.com/gamerboytr/mail.tm-api#readme",
+	"homepage": "https://github.com/XielQs/mail.tm-api#readme",
 	"scripts": {
-		"test": "nodemon --watch test/ --watch dist/ test/index.mjs",
+		"test": "nodemon -e ts --watch test/ --watch dist/ --exec \"ts-node test/index.ts\"",
 		"watch": "tsc --watch",
-		"build": "tsc"
+		"build": "tsc",
+		"lint": "eslint src/ --ext .ts",
+		"copy": "xcopy /E /Y /I src\\types dist\\types"
 	},
 	"keywords": [
 		"mail",
@@ -22,21 +24,21 @@
 		"receive emails",
 		"mail.tm",
 		"library",
-		"gamerboytr"
+		"xielq"
 	],
-	"author": "GamerboyTR",
+	"author": "XielQ",
 	"license": "MIT",
 	"dependencies": {
-		"axios": "^1.4.0",
+		"axios": "^1.6.7",
 		"eventsource": "^2.0.2"
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/gamerboytr/mail.tm-api.git"
+		"url": "git+https://github.com/XielQs/mail.tm-api.git"
 	},
 	"contributors": [
 		{
-			"name": "GamerboyTR",
+			"name": "XielQ",
 			"email": "offical.gamerboytr@yandex.com"
 		}
 	],
@@ -44,18 +46,18 @@
 		"dist"
 	],
 	"devDependencies": {
-		"@types/eventsource": "^1.1.9",
-		"@types/node": "^18.7.3",
-		"@typescript-eslint/eslint-plugin": "^5.0.0",
+		"@types/eventsource": "^1.1.15",
+		"@types/node": "^20.11.16",
+		"@typescript-eslint/eslint-plugin": "^6.4.0",
 		"eslint": "^8.0.1",
-		"eslint-config-standard-with-typescript": "^22.0.0",
+		"eslint-config-standard-with-typescript": "^43.0.1",
 		"eslint-plugin-import": "^2.25.2",
-		"eslint-plugin-n": "^15.0.0",
+		"eslint-plugin-n": "^15.0.0 || ^16.0.0 ",
 		"eslint-plugin-promise": "^6.0.0",
 		"typescript": "*"
 	},
 	"bugs": {
 		"email": "offical.gamerboytr@yandex.com",
-		"url": "https://github.com/gamerboytr/mail.tm-api"
+		"url": "https://github.com/XielQs/mail.tm-api"
 	}
 }

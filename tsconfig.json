@@ -2,21 +2,23 @@
 	"compilerOptions": {
 		"module": "CommonJS",
 		"esModuleInterop": true,
-		"target": "ESNext",
+		"target": "ES6",
 		"moduleResolution": "Node",
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
 		"sourceMap": true,
 		"outDir": "dist",
 		"alwaysStrict": true,
 		"declaration": true,
 		"noUnusedLocals": true,
 		"noUnusedParameters": true,
-		"removeComments": true,
 		"skipLibCheck": true,
-		"strictNullChecks": true,
 		"strictFunctionTypes": true,
-		"strictBindCallApply": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true
+		"strictBindCallApply": true
 	},
-	"lib": ["es2015"]
+  "include": [
+		"src/**/*",
+		"./.eslintrc.js"
+	],
+  "exclude": ["node_modules", "**/*.spec.ts"]
 }

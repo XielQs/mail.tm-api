@@ -2,9 +2,9 @@
 
 # mail.tm-api
 
-[![gamerboytr - mail.tm-api](https://img.shields.io/static/v1?label=gamerboytr&message=mail.tm-api&color=blue&logo=github)](https://github.com/gamerboytr/mail.tm-api "Go to GitHub repo") [![stars - mail.tm-api](https://img.shields.io/github/stars/gamerboytr/mail.tm-api?style=social)](https://github.com/gamerboytr/mail.tm-api) [![forks - mail.tm-api](https://img.shields.io/github/forks/gamerboytr/mail.tm-api?style=social)](https://github.com/gamerboytr/mail.tm-api)
+[![XielQ - mail.tm-api](https://img.shields.io/static/v1?label=XielQ&message=mail.tm-api&color=blue&logo=github)](https://github.com/XielQs/mail.tm-api "Go to GitHub repo") [![stars - mail.tm-api](https://img.shields.io/github/stars/XielQs/mail.tm-api?style=social)](https://github.com/XielQs/mail.tm-api) [![forks - mail.tm-api](https://img.shields.io/github/forks/XielQs/mail.tm-api?style=social)](https://github.com/XielQs/mail.tm-api)
 
-[![GitHub release](https://img.shields.io/github/release/gamerboytr/mail.tm-api?include_prereleases=&sort=semver&color=blue)](https://github.com/gamerboytr/mail.tm-api/releases/) [![License](https://img.shields.io/badge/License-MIT-blue)](#license) [![issues - mail.tm-api](https://img.shields.io/github/issues/gamerboytr/mail.tm-api)](https://github.com/gamerboytr/mail.tm-api/issues)
+[![GitHub release](https://img.shields.io/github/release/XielQs/mail.tm-api?include_prereleases=&sort=semver&color=blue)](https://github.com/XielQs/mail.tm-api/releases/) [![License](https://img.shields.io/badge/License-MIT-blue)](#license) [![issues - mail.tm-api](https://img.shields.io/github/issues/XielQs/mail.tm-api)](https://github.com/XielQs/mail.tm-api/issues)
 
 </center>
 
@@ -17,7 +17,9 @@ $ npm install mail.tm-api
 # Or
 $ yarn add mail.tm-api
 # Or
-$ pnpm install mail.tm-api
+$ pnpm add mail.tm-api
+# Or
+$ bun add mail.tm-api
 ```
 
 ## Getting Started
@@ -31,22 +33,22 @@ $ pnpm install mail.tm-api
 There is a bunch of way to create an account
 
 ```javascript
-const Mail = require('mail.tm-api');
+const MailTM = require('mail.tm-api');
 
-const account = await Mail.createAccount();
+const account = await MailTM.createAccount();
 // Or you can specify the mail address & password
-const account = await Mail.createAccount('ADDRESS', 'PASSWORD');
-// Example: Mail.createAccount('George', 'mySuperDuperPass')
+const account = await MailTM.createAccount('ADDRESS', 'PASSWORD');
+// Example: MailTM.createAccount('George', 'mySuperDuperPass')
 ```
 
 You can create account with only domain
 
 ```js
-const domain = await Mail.fetchDomains({ getRandomDomain: true });
+const domain = await MailTM.fetchDomains({ getRandomDomain: true });
 
-const account = await Mail.createAccount(domain, 'PASSWORD');
+const account = await MailTM.createAccount(domain, 'PASSWORD');
 // Without password
-const account = await Mail.createAccount(domain);
+const account = await MailTM.createAccount(domain);
 ```
 
 #### Login Account
@@ -82,18 +84,18 @@ console.log(await account.delete());
 #### Fetch domains
 
 ```js
-const Mail = require('mail.tm-api');
+const MailTM = require('mail.tm-api');
 
-console.log(await Mail.fetchDomains());
+console.log(await MailTM.fetchDomains());
 // [{ id: 'DOMAIN_ID', domain: 'DOMAIN' }]
 
 // Fetch a specific page
 
-console.log(await Mail.fetchDomains({ page: 2 }));
+console.log(await MailTM.fetchDomains({ page: 2 }));
 // [{ id: 'DOMAIN_ID', domain: 'DOMAIN' }]
 
 // Get random domain
-console.log(await Mail.fetchDomains({ getRandomDomain: true }));
+console.log(await MailTM.fetchDomains({ getRandomDomain: true }));
 ```
 
 ### Configure Class
@@ -180,4 +182,4 @@ console.log(await (await account.emails.fetch('MAIL_ID')).download('PATH.eml'));
 
 ### License
 
-Released under [MIT](/LICENSE) by [@gamerboytr](https://github.com/gamerboytr).
+Released under [MIT](/LICENSE) by [@XielQs](https://github.com/XielQs).

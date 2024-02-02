@@ -3,12 +3,11 @@ export default function formatDates (data: any): any {
     return data
   }
 
-  const dates = ['createdAt', 'updatedAt'];
+  const dates = ['createdAt', 'updatedAt']
 
   for (const date of dates) {
     data[date + 'Timestamp'] = data[date]
-    // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
-    delete data[date]
+    Reflect.deleteProperty(data, date)
   }
 
   return data

@@ -1,7 +1,7 @@
 export default class MailTMError extends Error {
   public constructor (message?: string) {
-    super(message);
+    super(message)
 
-    this.name = this.constructor.name;
+    this.name = this.constructor.name
   }
 }

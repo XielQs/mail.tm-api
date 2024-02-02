@@ -1,17 +1,17 @@
-import { Mail as MailType } from '../types/common';
-import Mail from '../utils/Mail';
-import Account from './Account';
+import type { IMail } from '../types/common'
+import type Account from './Account'
+import Mail from '../utils/Mail'
 
-export default class MailCache extends Map<string, Mail> {
-  account: Account;
+export default class MailCache extends Map<string, Mail<false>> {
+  account!: Account
 
   public constructor (account: Account) {
-    super();
+    super()
 
-    Object.defineProperty(this, 'account', { value: account, configurable: true, writable: false, enumerable: false });
+    Object.defineProperty(this, 'account', { value: account, configurable: true, writable: false, enumerable: false })
   }
 
-  public set (id: string, mail: MailType): this {
-    return super.set(id, new Mail(mail, this.account));
+  public set (id: string, mail: IMail): this {
+    return super.set(id, new Mail(mail, this.account))
   }
 }

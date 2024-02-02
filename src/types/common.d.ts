@@ -1,4 +1,4 @@
-export interface Domain {
+export interface IDomain {
   id: string
   domain: string
   isActive: boolean
@@ -9,9 +9,9 @@ export interface Domain {
   get updatedAt(): Date
 }
 
-export interface Mail {
+export interface IMail<Cache extends boolean = false> {
   id: string
-  accountId: string
+  html?: If<Cache, undefined, string[]>
   msgid: string
   from: {
     address: string
@@ -33,3 +33,5 @@ export interface Mail {
   get createdAt(): Date
   get updatedAt(): Date
 }
+
+export type If<Condition extends boolean, Then, Else> = Condition extends true ? Then : Else

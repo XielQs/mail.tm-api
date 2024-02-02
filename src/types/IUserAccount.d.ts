@@ -1,4 +1,4 @@
-export default interface UserAccount {
+export default interface IUserAccount {
   id: string
   address: string
   quota: number

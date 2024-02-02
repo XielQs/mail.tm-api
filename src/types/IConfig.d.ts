@@ -1,3 +1,3 @@
-export default interface Config {
+export default interface IConfig {
   mailService?: 'mail.tm' | 'mail.gw'
 }
