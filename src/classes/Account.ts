@@ -1,5 +1,5 @@
 import type IUserAccount from '../types/IUserAccount'
-import IMailTMError from '../errors/MailTMError'
+import MailTMError from '../errors/MailTMError'
 import formatDates from '../utils/formatDates'
 import type IAccount from '../types/IAccount'
 import type IConfig from '../types/IConfig'
@@ -10,7 +10,7 @@ import type EventSource from 'eventsource'
 import getError from '../utils/getError'
 import request from '../utils/request'
 import type Mail from '../utils/Mail'
-import IMails from './Mails'
+import Mails from './Mails'
 
 declare interface Account {
   addListener (event: 'newMail', listener: (mail: Mail<true>) => void): this
@@ -22,7 +22,7 @@ declare interface Account {
 }
 
 class Account extends EventEmitter implements IAccount {
-  public mails!: IMails
+  public mails!: Mails
   public api!: AxiosInstance
   public _eventSource!: EventSource
   public readonly config!: IConfig
@@ -41,7 +41,7 @@ class Account extends EventEmitter implements IAccount {
     super()
 
     Object.defineProperty(this, 'api', { value: request(), configurable: true, writable: false, enumerable: false })
-    Object.defineProperty(this, 'mails', { value: new IMails(this), configurable: true, writable: false, enumerable: true })
+    Object.defineProperty(this, 'mails', { value: new Mails(this), configurable: true, writable: false, enumerable: true })
     Object.defineProperty(this, 'config', { value: config, enumerable: false, writable: false, configurable: false })
     Object.assign(this, formatDates(account))
   }
@@ -50,7 +50,7 @@ class Account extends EventEmitter implements IAccount {
     return await new Promise(async (resolve, reject) => {
       if (this.token === null || this.token === undefined) {
         if (this.password === null || this.password === undefined || this.address === undefined) {
-          reject(new IMailTMError('Account email address and password or token required'))
+          reject(new MailTMError('Account email address and password or token required'))
         }
 
         const tokenResponse = await this.api.post('/token', { address: this.address, password: this.password }).catch(e => e.response ?? e)
@@ -92,7 +92,7 @@ class Account extends EventEmitter implements IAccount {
   }
 
   public addListener (event: string, listener: (...args: any) => void): this {
-    const events = ['account', 'newIMail']
+    const events = ['account', 'newMail']
 
     if (!events.includes(event)) {
       return this
@@ -110,7 +110,7 @@ class Account extends EventEmitter implements IAccount {
   }
 
   public once (event: string, listener: (...args: any) => void): this {
-    const events = ['account', 'newIMail']
+    const events = ['account', 'newMail']
 
     if (!events.includes(event)) {
       return this
@@ -124,7 +124,7 @@ class Account extends EventEmitter implements IAccount {
   }
 
   public prependListener (event: string, listener: (...args: any) => void): this {
-    const events = ['account', 'newIMail']
+    const events = ['account', 'newMail']
 
     if (!events.includes(event)) {
       return this
@@ -138,7 +138,7 @@ class Account extends EventEmitter implements IAccount {
   }
 
   public prependOnceListener (event: string, listener: (...args: any) => void): this {
-    const events = ['account', 'newIMail']
+    const events = ['account', 'newMail']
 
     if (!events.includes(event)) {
       return this
