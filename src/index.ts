@@ -9,7 +9,8 @@ import Account from './classes/Account'
 import request from './utils/request'
 
 const CONFIG: IConfig = {
-  mailService: 'mail.tm'
+  mailService: 'mail.tm',
+  axiosOptions: {}
 }
 
 let domains: IDomain[] = []
@@ -41,8 +42,8 @@ export async function fetchDomains<Random extends boolean = false> ({ page = 1, 
 /**
  * Creates an account
  * @example
- * const account = await createAccount();
- * console.log(account.email);
+ * const account = await createAccount()
+ * console.log(account.email)
  */
 export async function createAccount (address?: string, password?: string): Promise<Account> {
   return await new Promise(async (resolve, reject) => {
@@ -84,11 +85,11 @@ export async function loginAccount (token: string): Promise<Account>
 /**
  * Logs into an existing account
  * @example
- * const account = await loginAccount("mySuperSecretToken"); // Login with account token
- * console.log(account.email);
+ * const account = await loginAccount("mySuperSecretToken") // Login with account token
+ * console.log(account.email)
  * // Or
- * const account = await loginAccount("myEmail@domain.com", "mySuperSecretPassword");
- * console.log(account.email);
+ * const account = await loginAccount("myEmail@domain.com", "mySuperSecretPassword")
+ * console.log(account.email)
  */
 export async function loginAccount (...args: [string, string] | [string]): Promise<Account> {
   return await new Promise(async (resolve, reject) => {
@@ -136,6 +137,6 @@ export async function loginAccount (...args: [string, string] | [string]): Promi
 }
 
 export function setConfig (config: IConfig): void {
-  request(config.mailService)
+  request(config.mailService, config.axiosOptions)
   Object.assign(CONFIG, config)
 }

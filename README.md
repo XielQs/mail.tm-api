@@ -111,6 +111,7 @@ MailTM.setConfig({
 #### Available props
 
 - **mailService** _[Optional & 'mail.tm' | 'mail.gw']_ **=** 'mail.tm': Change mail service
+- **axiosOptions** _[Optional & Object]_ **=** {}: Axios request options
 
 ### Emails
 

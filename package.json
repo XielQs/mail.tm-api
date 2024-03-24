@@ -1,6 +1,6 @@
 {
 	"name": "mail.tm-api",
-	"version": "3.0.0",
+	"version": "3.0.1",
 	"description": "A powerful library to use the Mail.TM api and Mail.GW to receive emails",
 	"main": "./dist/index.js",
 	"homepage": "https://github.com/XielQs/mail.tm-api#readme",
